@@ -1,0 +1,64 @@
+server:
+  port: 8000
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: xturgunov069@gmail.com
+    password: achj gaca mtvp vewt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+
+    url: jdbc:postgresql://hw-postgress-do-user-28401997-0.a.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+    username: doadmin
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HwAuthHikariPool
+      maximum-pool-size: 10
+      minimum-idle: 5
+
+  jpa:
+    database: postgresql
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: false
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 500
+
+application:
+  security:
+    jwt:
+      secret-key: 0E0864C3B7F5E51220DAE4C25DF9A3AC3F7BD65ABE229C2BA5DF7908776EB56C
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: ERROR
+    org.hibernate.type.descriptor.sql.BasicBinder: ERROR

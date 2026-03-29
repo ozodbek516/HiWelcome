@@ -1,0 +1,64 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: HiWelcome
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: xturgunov069@gmail.com
+    password: ${DB_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hw_auth_db
+    username: postgres
+    password: root123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HwAuthHikariPool
+
+  jpa:
+    database: postgresql
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: true
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 200
+
+application:
+  security:
+    jwt:
+      secret-key: 0E0864C3B7F5E51220DAE4C25DF9A3AC3F7BD65ABE229C2BA5DF7908776EB56C
+      expiration: 86400000
+      refresh-token:
+        expiration: 604800000
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.stat: INFO

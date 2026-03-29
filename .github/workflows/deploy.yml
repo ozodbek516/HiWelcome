@@ -1,0 +1,67 @@
+name: Deploy Backend to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Loyiha kodlarini yuklab olish
+      uses: actions/checkout@v3
+
+    - name: Kodlarni DigitalOcean serverga nusxalash
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "."
+        target: "/var/www/hiwelcome-backend"
+
+    - name: Serverda Docker orqali ishga tushirish
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/hiwelcome-backend
+          docker-compose down
+          docker-compose up -d --build
+
+    - name: Telegramga Muvaffaqiyat xabarini yuborish
+      if: success()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          HiWelcome Notification 🚀
+          
+          👤 User: ${{ github.actor }}
+          📦 Service: hiwelcome-backend
+          📝 Commit: ${{ github.event.commits[0].message }}
+          
+          ✅ Status: Successfully Deployed!
+          🌐 API URL: [Swagger LINK](https://api.hiwelcome.uz/swagger-ui/index.html)
+
+    - name: Telegramga Xatolik xabarini yuborish
+      if: failure()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          HiWelcome Notification ⚠️
+          
+          👤 User: ${{ github.actor }}
+          📦 Service: hiwelcome-backend
+          📝 Commit: ${{ github.event.commits[0].message }}
+          
+          ❌ Status: Deployment Failed! Xatolik yuz berdi, serverni tekshiring.
