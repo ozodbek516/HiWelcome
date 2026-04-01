@@ -2,4 +2,4 @@ spring:
   application:
     name: HiWelcome
   profiles:
-    active: prod //prod
+    active: prod

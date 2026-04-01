@@ -6,7 +6,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: xturgunov069@gmail.com
-    password: achj gaca mtvp vewt
+    password: {AIVEN_PASSWORD}
     properties:
       mail:
         smtp:
@@ -18,7 +18,7 @@ spring:
 
     url: jdbc:postgresql://hw-postgress-do-user-28401997-0.a.db.ondigitalocean.com:25060/defaultdb?sslmode=require
     username: doadmin
-    password: ${DB_PASSWORD}
+    password: achj gaca mtvp vewt
     driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: HwAuthHikariPool
